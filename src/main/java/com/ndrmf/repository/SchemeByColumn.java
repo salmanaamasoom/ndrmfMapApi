@@ -12,4 +12,7 @@ public interface SchemeByColumn {
      String getSchemeStatus();
      String getSchemeStatusPercentage();
      Tehsil getTehsil();
+     Long getContractAmount();
+     Long getDirectBeneficiaries();
+     Long getInDirectBeneficiaries();
 }

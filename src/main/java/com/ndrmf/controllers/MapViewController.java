@@ -97,7 +97,7 @@ public class MapViewController {
         }
     }
     @GetMapping (value = "/getAllSchemeList")
-    public ResponseEntity<?> getUnionCouncil() {
+    public ResponseEntity<?> getAllSchemeList() {
         List<SchemeByColumn> schemeByColumnsList = (List<SchemeByColumn>) schemeRepository.findAllBy();
         return ResponseEntity.ok(schemeByColumnsList);
     }

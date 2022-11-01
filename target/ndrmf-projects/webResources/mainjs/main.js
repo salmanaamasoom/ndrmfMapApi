@@ -1,4 +1,7 @@
 'use strict'
+// let ip = 'localhost';
+// let ip = '192.168.100.248';
+let ip = '58.65.167.246';
 let mapView;
 let initExtent;
 let barChart;
@@ -8,6 +11,9 @@ let schemesArray = [];
 let pieChart = [];
 let doughnutChart = [];
 let pathname = window.location.pathname;
+let card2;
+let card3;
+let card4;
 function onLoadMap() {
     require([
         "esri/config",
@@ -39,11 +45,11 @@ function onLoadMap() {
 
 
         let mapImageLayer = new MapImageLayer({
-            url: "https://localhost:6443/arcgis/rest/services//NDRMF_Projects/MapServer",
+            url: "https://"+ip+":6443/arcgis/rest/services//NDRMF_Projects/MapServer",
         });
 
         // URL to the map service where the identify will be performed
-        let identifyURL = "https://localhost:6443/arcgis/rest/services//NDRMF_Projects/MapServer";
+        let identifyURL = "https://"+ip+":6443/arcgis/rest/services//NDRMF_Projects/MapServer";
 
         // use identify to query the service to add interactivity to the app
         let identifyLayer = new MapImageLayer({
@@ -205,7 +211,6 @@ function onLoadMap() {
             view: mapView,
             // container: "tocDiv",
             listItemCreatedFunction: (event) => {
-                // console.log(event);
                 const item = event.item;
                 if (item.layer.type != "group") {
                     // don't show legend twice
@@ -227,9 +232,7 @@ function onLoadMap() {
         *start -- this function for zooming from table id of line feature
         */
         function search_for_highlight(featureId, layerId, attributeName) {
-            var queryURL = "https://localhost:6443/arcgis/rest/services//NDRMF_Projects/MapServer/" + layerId + "";
-            // var queryURL = "https://localhost:6443/arcgis/rest/services//NDRMF_Projects/MapServer/3"
-
+            var queryURL = "https://"+ip+":6443/arcgis/rest/services//NDRMF_Projects/MapServer/" + layerId + "";
             // create the Query object
             let queryObject = new Query();
             // queryObject.where = "PROVINCE_I = 6";
@@ -298,7 +301,7 @@ function onLoadMap() {
         }
 
         function search_for_onload_zoom(featureId, layer_id, attributeName) {
-            var query_task = new esri.tasks.QueryTask("https://localhost:6443/arcgis/rest/services//NDRMF_Projects/MapServer/" + layer_id + "");
+            var query_task = new esri.tasks.QueryTask("https://"+ip+":6443/arcgis/rest/services//NDRMF_Projects/MapServer/" + layer_id + "");
             var query = new esri.tasks.Query();
             query.where = "" + attributeName + " = " + featureId + "";
             query.returnGeometry = true;
@@ -340,7 +343,8 @@ function getAllSchemeData() {
         cache: false,
         crossDomain: true,
         success : function(result) {
-            // console.log(result);
+            document.getElementById("totalSchemesCard").innerHTML = result.length;
+            cardData(result,true);
             var html = '<div>';
             $(result).each(function () {
                 if(this.schemeStatusPercentage >= 80 && this.schemeStatusPercentage <= 100){
@@ -408,6 +412,8 @@ function getDistrictList(){
     document.getElementById("tehsilSelect").length = 1;
     document.getElementById("ucSelect").length = 1;
     document.getElementById("schemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("provinceSelect").value == 0){
         document.getElementById("districtSelect").length = 1;
         mapView.graphics.removeAll();
@@ -448,6 +454,8 @@ function getTehsilList(){
     document.getElementById("tehsilSelect").length = 1;
     document.getElementById("ucSelect").length = 1;
     document.getElementById("schemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("districtSelect").value == 0){
         mapView.graphics.removeAll();
         mapView.goTo(initExtent);
@@ -484,6 +492,8 @@ function getTehsilList(){
 function getUnionCouncilList(){
     document.getElementById("ucSelect").length = 1;
     document.getElementById("schemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("tehsilSelect").value == 0){
         mapView.graphics.removeAll();
         mapView.goTo(initExtent);
@@ -518,8 +528,9 @@ function getUnionCouncilList(){
     }
 }
 function getSchemeList(status){
-
     document.getElementById("schemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("ucSelect").value == 0 && status == true){
         mapView.graphics.removeAll();
         mapView.goTo(initExtent);
@@ -547,7 +558,8 @@ function getSchemeList(status){
                 chartLabels.length = 0;
                 chartData.length = 0;
                 schemesArray.length = 0;
-                console.log(result);
+                document.getElementById("totalSchemesCard").innerHTML = result.length;
+                cardData(result,false);
                 $(result).each(function () {
                     $("#schemeSelect").append(new Option(this.schemeName, this.schemeId));
                     chartLabels.push(this.schemeCode);
@@ -579,7 +591,6 @@ function zoomToScheme(){
         let selectIndex = document.getElementById("schemeSelect").selectedIndex;
         let schemeLabel = schemesArray[selectIndex-1].schemeName;
         let schemeData =  schemesArray[selectIndex-1].schemeStatusPercentage;
-        // console.log(schemesArray);
         chartLabels.length = 0;
         chartData.length = 0;
         chartLabels.push(schemeLabel);
@@ -607,12 +618,10 @@ function zoomToScheme(){
 
 function onClickSchemeName(thisObj) {
     let link = thisObj.getAttribute( "value" );
-    // console.log(link);
-    search_for_highlight(link.split('-')[1] ,2,'TEHSIL_ID ');
-    setTimeout(function(){
-        search_for_highlight(link.split('-')[0] ,0,'SCHEME_ID');
-    }, 500);//wait 2 seconds
-
+    //search_for_highlight(link.split('-')[1] ,2,'TEHSIL_ID ');
+    search_for_highlight(link.split('-')[0] ,0,'SCHEME_ID');
+    // setTimeout(function(){
+    // }, 500);//wait 2 seconds
 }
 function resetMapSetting() {
     mapView.goTo(initExtent);
@@ -621,6 +630,11 @@ function resetMapSetting() {
     chartData.length = 0;
     var table = $('#exampleJ').DataTable();
     var data = table.rows().data().toArray();
+    document.getElementById("totalSchemesCard").innerHTML = data.length;
+    document.getElementById("totalHundredPercentCard").innerHTML = card2;
+    document.getElementById("totalContractAmountCard").innerHTML = card3;
+    document.getElementById("totalBeneficiariesCard").innerHTML = card4;
+
     $(data).each(function (index) {
         chartLabels.push(data[index][1]);
         chartData.push($(table.cell(index, 0).node()).find('a').attr('value').split('-')[2])
@@ -638,7 +652,6 @@ function resetMapSetting() {
     document.getElementById("thematicSchemeSelect").length = 1;
     $('#pieCardDiv').hide();
     $('#doughnutCardDiv').hide();
-
 }
 
 function getFipList(){
@@ -663,6 +676,8 @@ function getFipList(){
 }
 function getFipSchemeList() {
     document.getElementById("fipSchemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("fipSelect").value == 0){
         mapView.graphics.removeAll();
         mapView.goTo(initExtent);
@@ -683,13 +698,19 @@ function getFipSchemeList() {
                 chartLabels.length = 0;
                 chartData.length = 0;
                 schemesArray.length = 0;
+                cardData(result,false);
+                document.getElementById("totalSchemesCard").innerHTML = result.length;
                 $(result).each(function () {
                     $("#fipSchemeSelect").append(new Option(this.schemeName, this.schemeId));
                     chartLabels.push(this.schemeCode);
                     chartData.push(this.schemeStatusPercentage);
                     schemesArray.push({
                         schemeName: this.schemeName,
-                        schemeStatusPercentage: this.schemeStatusPercentage
+                        schemeStatusPercentage: this.schemeStatusPercentage,
+                        directBeneficiaries:this.directBeneficiaries,
+                        inDirectBeneficiaries:this.inDirectBeneficiaries,
+                        agricultureLand:this.agricultureLand,
+                        nonAgricultureLand:this.nonAgricultureLand
                     });
                 });
                 barChart.update();
@@ -714,6 +735,20 @@ function zoomToFipScheme(){
         chartLabels.push(schemeLabel);
         chartData.push(schemeData);
         barChart.update();
+
+        $('#pieCardDiv').show();
+        $('#doughnutCardDiv').show();
+        let pieChartLabels = [ 'Direct Beneficiaries', 'In Direct Beneficiaries'];
+        let pieChartData = [schemesArray[selectIndex-1].directBeneficiaries , schemesArray[selectIndex-1].inDirectBeneficiaries];
+        pieChart.data.labels = pieChartLabels;
+        pieChart.data.datasets[0].data = pieChartData;
+        pieChart.update();
+
+        let doughnutChartLabels = [ 'Agriculture Land', 'Non Agriculture Land'];
+        let doughnutChartData = [schemesArray[selectIndex-1].agricultureLand , schemesArray[selectIndex-1].nonAgricultureLand];
+        doughnutChart.data.labels = doughnutChartLabels;
+        doughnutChart.data.datasets[0].data = doughnutChartData;
+        doughnutChart.update();
 
         let sId = document.getElementById("fipSchemeSelect").value;
         search_for_highlight(sId,0,'SCHEME_ID');
@@ -741,6 +776,8 @@ function getThematicList() {
 }
 function getThematicSchemeList() {
     document.getElementById("thematicSchemeSelect").length = 1;
+    $('#pieCardDiv').hide();
+    $('#doughnutCardDiv').hide();
     if(document.getElementById("thematicSelect").value == 0){
         mapView.graphics.removeAll();
         mapView.goTo(initExtent);
@@ -748,7 +785,6 @@ function getThematicSchemeList() {
         let thematicId = document.getElementById("thematicSelect").value;
         let fipId = 0;
         let obj = 'fipId='+fipId+'&thematicId='+thematicId;
-        console.log(obj);
         $.ajax({
             type : 'GET',
             dataType : 'json',
@@ -761,13 +797,19 @@ function getThematicSchemeList() {
                 chartLabels.length = 0;
                 chartData.length = 0;
                 schemesArray.length = 0;
+                document.getElementById("totalSchemesCard").innerHTML = result.length;
+                cardData(result,false);
                 $(result).each(function () {
                     $("#thematicSchemeSelect").append(new Option(this.schemeName, this.schemeId));
                     chartLabels.push(this.schemeCode);
                     chartData.push(this.schemeStatusPercentage);
                     schemesArray.push({
                         schemeName: this.schemeName,
-                        schemeStatusPercentage: this.schemeStatusPercentage
+                        schemeStatusPercentage: this.schemeStatusPercentage,
+                        directBeneficiaries:this.directBeneficiaries,
+                        inDirectBeneficiaries:this.inDirectBeneficiaries,
+                        agricultureLand:this.agricultureLand,
+                        nonAgricultureLand:this.nonAgricultureLand
                     });
                 });
                 barChart.update();
@@ -794,6 +836,20 @@ function zoomToThematicScheme(){
         chartLabels.push(schemeLabel);
         chartData.push(schemeData);
         barChart.update();
+
+        $('#pieCardDiv').show();
+        $('#doughnutCardDiv').show();
+        let pieChartLabels = [ 'Direct Beneficiaries', 'In Direct Beneficiaries'];
+        let pieChartData = [schemesArray[selectIndex-1].directBeneficiaries , schemesArray[selectIndex-1].inDirectBeneficiaries];
+        pieChart.data.labels = pieChartLabels;
+        pieChart.data.datasets[0].data = pieChartData;
+        pieChart.update();
+
+        let doughnutChartLabels = [ 'Agriculture Land', 'Non Agriculture Land'];
+        let doughnutChartData = [schemesArray[selectIndex-1].agricultureLand , schemesArray[selectIndex-1].nonAgricultureLand];
+        doughnutChart.data.labels = doughnutChartLabels;
+        doughnutChart.data.datasets[0].data = doughnutChartData;
+        doughnutChart.update();
 
         let sId = document.getElementById("thematicSchemeSelect").value;
         search_for_highlight(sId,0,'SCHEME_ID');
@@ -987,4 +1043,29 @@ function onloadDoughnutChart(){
             responsive : true,
         }
     })
+}
+
+function cardData(result, val) {
+    let hundredPercentageArray = [];
+    hundredPercentageArray.length = 0;
+    $(result).each(function () {
+        if(this.schemeStatusPercentage == 100){
+            hundredPercentageArray.push(this);
+        }
+    })
+    document.getElementById("totalHundredPercentCard").innerHTML = hundredPercentageArray.length;
+    let totalAmount = 0;
+    let totalBeneficiaries = 0;
+    $(result).each(function () {
+        totalAmount += this.contractAmount;
+        totalBeneficiaries += this.directBeneficiaries+this.inDirectBeneficiaries;
+    })
+    document.getElementById("totalContractAmountCard").innerHTML = (totalAmount/1000000).toFixed(2) +"<small> M</small>";
+    document.getElementById("totalBeneficiariesCard").innerHTML = (totalBeneficiaries).toLocaleString();
+
+    if(val){
+        card2 = document.getElementById("totalHundredPercentCard").innerHTML;
+        card3 = document.getElementById("totalContractAmountCard").innerHTML;
+        card4 = document.getElementById("totalBeneficiariesCard").innerHTML;
+    }
 }
