@@ -81,6 +81,8 @@
 	</dependencies>
 
 	<build>
+<!--		<finalName>ndrmf-projects-public</finalName>-->
+<!--		<finalName>ndrmf-projects-local</finalName>-->
 		<finalName>ndrmf-projects</finalName>
 		<plugins>
 			<plugin>

@@ -29,13 +29,15 @@
 
 
   <!-- Arc GIS JS API style -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/dark/main.css">
+<%--  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/dark/main.css">--%>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
   <style>
 
   </style>
 
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<%--<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">--%>
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -44,7 +46,8 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark">
+<%--  <nav class="main-header navbar navbar-expand navbar-dark">--%>
+  <nav class="main-header navbar navbar-expand navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -62,6 +65,11 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Zoom to Full Extent" onclick="resetMapSetting()" role="button">
+          <i class="fas fa-atlas"></i>
         </a>
       </li>
       <!-- FullScreen Button -->
@@ -86,7 +94,8 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+<%--  <aside class="main-sidebar sidebar-dark-primary elevation-4">--%>
+  <aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img src="<c:url value='/webResources/img/ndrmf_logo.jpg'/>" alt="NDRMF Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -265,14 +274,13 @@
         <!-- Info boxes -->
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
+            <div class="info-box bg-gradient-gray">
               <span class="info-box-icon bg-info elevation-1"><i class="fas fa-project-diagram"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Total Schemes</span>
                 <span id="totalSchemesCard" class="info-box-number">
                   10
-<%--                          <small>%</small>--%>
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -298,7 +306,7 @@
           <div class="clearfix hidden-md-up"></div>
 
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
+            <div class="info-box mb-3 bg-gradient-olive">
               <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-money-bill-alt"></i></span>
 
               <div class="info-box-content">
@@ -311,9 +319,8 @@
           </div>
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
+            <div class="info-box mb-3 bg-gradient-lightblue">
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Beneficiaries</span>
                 <span id="totalBeneficiariesCard" class="info-box-number">0</span>
@@ -332,18 +339,18 @@
           <div class="col-md-8">
             <!-- MAP & BOX PANE -->
             <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Map</h3>
+<%--              <div class="card-header">--%>
+<%--                <h3 class="card-title">Map</h3>--%>
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-toggle="tooltip" data-placement="top" title="Zoom to Full Extent" onclick="resetMapSetting()">
-                    <i class="fas fa-atlas"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
+<%--                <div class="card-tools">--%>
+<%--                  <button type="button" class="btn btn-tool" data-toggle="tooltip" data-placement="top" title="Zoom to Full Extent" onclick="resetMapSetting()">--%>
+<%--                    <i class="fas fa-atlas"></i>--%>
+<%--                  </button>--%>
+<%--                  <button type="button" class="btn btn-tool" data-card-widget="collapse">--%>
+<%--                    <i class="fas fa-minus"></i>--%>
+<%--                  </button>--%>
+<%--                </div>--%>
+<%--              </div>--%>
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <div class="d-md-flex">
@@ -363,18 +370,17 @@
           <div class="col-md-4">
             <!-- TABLE: LATEST ORDERS -->
             <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">Attribute Table</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <%--                  <button type="button" class="btn btn-tool" data-card-widget="remove">--%>
-                  <%--                    <i class="fas fa-times"></i>--%>
-                  <%--                  </button>--%>
-                </div>
-              </div>
+<%--              <div class="card-header border-transparent">--%>
+<%--                <h3 class="card-title">Attribute Table</h3>--%>
+<%--                <div class="card-tools">--%>
+<%--                  <button type="button" class="btn btn-tool" data-card-widget="collapse">--%>
+<%--                    <i class="fas fa-minus"></i>--%>
+<%--                  </button>--%>
+<%--                  &lt;%&ndash;                  <button type="button" class="btn btn-tool" data-card-widget="remove">&ndash;%&gt;--%>
+<%--                  &lt;%&ndash;                    <i class="fas fa-times"></i>&ndash;%&gt;--%>
+<%--                  &lt;%&ndash;                  </button>&ndash;%&gt;--%>
+<%--                </div>--%>
+<%--              </div>--%>
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="table-responsive" id="tableDiv" style="height:auto;">
@@ -499,7 +505,8 @@
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+<%--  <aside class="control-sidebar control-sidebar-dark">--%>
+  <aside class="control-sidebar control-sidebar-light">
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
@@ -566,8 +573,8 @@
     // $('#mapDiv').css({
     //   height: $(document).height()
     // });
-    $("#mapDiv").css("height", 440);
-    $("#tableDiv").css("height", 407);
+    $("#mapDiv").css("height", 475);
+    $("#tableDiv").css("height", 442);
     onLoadMap();
   });
   document.addEventListener('fullscreenchange', exitHandler)
@@ -577,8 +584,8 @@
   function exitHandler() {
     if(!document.fullscreenElement && !document.webkitIsFullScreen &&
             !document.mozFullScreen && !document.msFullScreenElement){
-      $("#mapDiv").css("height", 440);
-      $("#tableDiv").css("height", 407);
+      $("#mapDiv").css("height", 475);
+      $("#tableDiv").css("height", 442);
     }
   }
 

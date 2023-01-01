@@ -1,7 +1,7 @@
 'use strict'
 // let ip = 'localhost';
-// let ip = '192.168.100.248';
-let ip = '58.65.167.246';
+let ip = '192.168.100.248';
+// let ip = '58.65.167.246';
 let mapView;
 let initExtent;
 let barChart;
@@ -122,17 +122,52 @@ function onLoadMap() {
                         feature.popupTemplate = {
                             // autocasts as new PopupTemplate()
                             title: layerName,
-                            content: "<table style='border: white'><tr><td><b>SCHEME_ID:</b></td><td>{SCHEME_ID}</td></tr>" +
-                                "<br><b>CODE:</b> {SCHEME_COD}" +
-                                "<br><b>SCHEME:</b> {SCHEME_NAM}" +
-                                "<br><b>FIP:</b> {FIP}" +
-                                "<br><b>DIRECT BEN:</b> {DIRECT_BEN}" +
-                                "<br><b>IN DIRECT BEN:</b> {INDIRECT_B}" +
-                                "<br><b>AGRI (Hec):</b> {AGRICULTUR}" +
-                                "<br><b>NON AGRI (Hec) :</b> {NON_AGRICU}" +
-                                "<br><b>MITIGATION:</b> {MITIGATION}" +
-                                "<br><b>SCHEME_STA:</b> {SCHEME_STA}" +
-                                "<br><b>COST:</b> {COST_CONTR}</table>"
+                            content:
+                                [
+                                    {
+                                        type: "fields",
+                                        fieldInfos: [
+                                            {
+                                                fieldName: "SCHEME_ID",
+                                                label: "Scheme ID"
+                                            }, {
+                                                fieldName: "SCHEME_COD",
+                                                label: "Scheme Code"
+                                            }, {
+                                                fieldName: "SCHEME_NAM",
+                                                label: "Scheme Name"
+                                            }, {
+                                                fieldName: "FIP",
+                                                label: "FIP"
+                                            }, {
+                                                fieldName: "DIRECT_BEN",
+                                                label: "Direct Beneficiaries"
+                                            }, {
+                                                fieldName: "INDIRECT_B",
+                                                label: "Indirect Beneficiaries"
+                                            }, {
+                                                fieldName: "AGRICULTUR",
+                                                label: "Agriculture"
+                                            }, {
+                                                fieldName: "NON_AGRICU",
+                                                label: "Agriculture"
+                                            }, {
+                                                fieldName: "MITIGATION",
+                                                label: "Mitigation"
+                                            }, {
+                                                fieldName: "SCHEME_STA",
+                                                label: "Status"
+                                            }, {
+                                                fieldName: "COST_CONTR",
+                                                label: "Contract Cost"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                // "<br><b>NON AGRI (Hec) :</b> {NON_AGRICU}" +
+                                // "<br><b>MITIGATION:</b> {MITIGATION}" +
+                                // "<br><b>SCHEME_STA:</b> {SCHEME_STA}" +
+                                // "<br><b>COST:</b> {COST_CONTR}</table>"
                         };
                     } else if (layerName === "Union Council Boundary") {
                         feature.popupTemplate = {
@@ -961,21 +996,26 @@ function onloadBarChart() {
 
     var barChartCanvas = $('#barChart').get(0).getContext('2d')
     barChart = new Chart(barChartCanvas, {
-        type: 'bar',
+        type: 'line',
         data: {
             // labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             labels : chartLabels,
             datasets: [
                 {
                     label               : 'Scheme Completion Percentage',
-                    backgroundColor     : 'rgb(220,53,69)',
-                    borderColor         : 'rgba(255,254,254,0.8)',
-                    pointRadius          : true,
-                    pointColor          : '#61ba3b',
-                    pointStrokeColor    : 'rgb(12,35,187)',
-                    pointHighlightFill  : '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    // backgroundColor     : 'rgb(255,255,255)',
+                    // borderColor         : 'rgba(236,9,9,0.8)',
+                    // pointRadius          : true,
+                    // pointColor          : '#61ba3b',
+                    // pointStrokeColor    : 'rgb(12,35,187)',
+                    // pointHighlightFill  : '#fff',
+                    // pointHighlightStroke: 'rgba(60,141,188,1)',
                     // data                : [28, 48, 40, 19, 86, 27, 90]
+                    borderColor: 'rgba(255,18,18,0.79)',
+                    backgroundColor: 'rgba(236,9,88,0.15)',
+                    pointStyle: 'circle',
+                    pointRadius: 3,
+                    pointHoverRadius: 7,
                     data                : chartData
                 }
             ]

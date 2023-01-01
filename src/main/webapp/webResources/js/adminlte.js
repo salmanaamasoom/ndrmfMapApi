@@ -1102,13 +1102,13 @@
 
       if (document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
         this.windowed();
-        $("#mapDiv").css("height", 440);
-        $("#tableDiv").css("height", 407);
+        $("#mapDiv").css("height", 475);
+        $("#tableDiv").css("height", 442);
 
       } else {
         this.fullscreen();
-        $("#mapDiv").css("height", 600);
-        $("#tableDiv").css("height", 565);
+        $("#mapDiv").css("height", 620);
+        $("#tableDiv").css("height", 588);
 
       }
     };
